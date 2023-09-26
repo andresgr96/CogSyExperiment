@@ -1,5 +1,4 @@
 import sys
-
 import pygame
 import random
 import time
@@ -27,13 +26,11 @@ colors = [
 font = pygame.font.Font(None, 74)
 arial_font = pygame.font.SysFont('Arial', 50)
 
-
 def display_message(message, y_offset, font):
     text = font.render(message, True, (0, 0, 0))
     text_rect = text.get_rect(center=(width // 2, height // 2 - y_offset))
     win.blit(text, text_rect)
     pygame.display.update()
-
 
 def input_box(y_offset):
     active = False
@@ -162,7 +159,6 @@ def instruction_screen():
         width = max(200, txt_surface.get_width() + 10)
         input_box.w = width
 
-
         # Display instructions
         ins_txt_surface = font.render(instruction_text, True, BLACK)
         win.blit(ins_txt_surface, (input_box.x - 450, height // 4))
@@ -200,7 +196,6 @@ def instruction_screen():
 
     return participant_id
 
-
 def spawn_objects(num_objects, color):
     win.fill(field_color)
     pygame.display.update()
@@ -221,7 +216,6 @@ def spawn_objects(num_objects, color):
         pygame.draw.rect(win, color, (x, y, 100, 100))
 
     pygame.display.update()
-
 
 def attention_experiment(participant_id):
     data = {'Participant_ID': [], 'Reaction_Time': [], 'Color': []}
@@ -255,7 +249,6 @@ def attention_experiment(participant_id):
 
     df = pd.DataFrame(data)
     df.to_csv(f'experiment_data_{participant_id}.csv', index=False)
-
 
 participant_id = instruction_screen()
 attention_experiment(participant_id)
