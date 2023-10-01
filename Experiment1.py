@@ -14,7 +14,7 @@ clock = pygame.time.Clock()
 
 # Set the background color
 field_color = (0, 255, 0)
-
+background = pygame.image.load('pictures_football/net.png')
 # Define colors
 colors = [
     (0, 255, 100),
