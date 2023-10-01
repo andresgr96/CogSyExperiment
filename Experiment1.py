@@ -3,6 +3,7 @@ import pygame
 import random
 import time
 import pandas as pd
+from pygame import mixer
 
 pygame.init()
 
@@ -12,9 +13,15 @@ width, height = infoObject.current_w, infoObject.current_h
 win = pygame.display.set_mode((width, height), pygame.FULLSCREEN)
 clock = pygame.time.Clock()
 
-# Set the background color
-field_color = (0, 255, 0)
-background = pygame.image.load('pictures_football/net.png')
+# Set the background 
+# field_color = (0, 255, 0)
+background = pygame.image.load('./pictures_football/net2.jpg')
+background = pygame.transform.scale(background, (2040, 1280))
+
+# Set background sound
+
+mixer.music.load('./stadium_sounds/stadium1.mp3')
+
 # Define colors
 colors = [
     (0, 255, 100),
@@ -197,7 +204,9 @@ def instruction_screen():
     return participant_id
 
 def spawn_objects(num_objects, color):
-    win.fill(field_color)
+    # Background
+    win.blit(background, (0, 0))
+    # win.fill(field_color)
     pygame.display.update()
     time.sleep(0.5)  # Brief delay to ensure background color is set before blocks appear
 
@@ -219,7 +228,7 @@ def spawn_objects(num_objects, color):
 
 def attention_experiment(participant_id):
     data = {'Participant_ID': [], 'Reaction_Time': [], 'Color': []}
-
+    
     for trial in range(40):
         running = True
         spawn_delay = random.randint(1, 5)
@@ -229,7 +238,7 @@ def attention_experiment(participant_id):
         spawn_objects(2, color)
 
         start_time = time.time()
-
+        
         while running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -243,7 +252,10 @@ def attention_experiment(participant_id):
                         data['Color'].append(color)
                         print(f'Trial {trial + 1} - Reaction time: {reaction_time} seconds- Color: {color}')
                         print(color)
-                        win.fill(field_color)
+                        # Background
+                        win.blit(background, (0, 0))
+                        
+                        # win.fill(field_color)
                         pygame.display.update()
                         running = False
 
@@ -251,4 +263,6 @@ def attention_experiment(participant_id):
     df.to_csv(f'experiment_data_{participant_id}.csv', index=False)
 
 participant_id = instruction_screen()
+# Play music continuously
+mixer.music.play(-1)
 attention_experiment(participant_id)
