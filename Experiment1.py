@@ -4,6 +4,7 @@ import random
 import time
 import pandas as pd
 from pygame import mixer
+import os
 
 pygame.init()
 
@@ -18,10 +19,16 @@ clock = pygame.time.Clock()
 background = pygame.image.load('./pictures_football/net2.jpg')
 background = pygame.transform.scale(background, (2040, 1280))
 
+# Player
+
+# player = pygame.image.load('./pictures_football/right1.png')
+image_path = './pictures_football/image_filenames'
+image_filenames = os.listdir(image_path)
+
 # Set background sound
 
 mixer.music.load('./stadium_sounds/stadium1.mp3')
-
+mixer.music.set_volume(0.15)
 # Define colors
 colors = [
     (0, 255, 100),
@@ -223,6 +230,7 @@ def spawn_objects(num_objects, color):
 
         existing_objects.append((x, y))
         pygame.draw.rect(win, color, (x, y, 100, 100))
+        # win.blit(player, color, (x, y, 100, 100))
 
     pygame.display.update()
 
@@ -264,5 +272,6 @@ def attention_experiment(participant_id):
 
 participant_id = instruction_screen()
 # Play music continuously
+time.sleep(5)
 mixer.music.play(-1)
 attention_experiment(participant_id)
