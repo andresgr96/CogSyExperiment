@@ -22,19 +22,40 @@ background = pygame.transform.scale(background, (2040, 1280))
 # Player
 
 # Declare Folder with Images of Players
-image_path = './pictures_football/'
+image_path = './pictures_football'
 image_filenames = os.listdir(image_path)
 
 # Set background sound
-
 mixer.music.load('./stadium_sounds/stadium3.mp3')
 mixer.music.set_volume(0.15)
+
+
 # Define colors
 colors = [
-    (0, 255, 100),
-    (0, 255, 150),
-    (0, 0, 255),
-    (255, 0, 0),
+    # Red Channel
+    (110, 123, 50),
+    (135, 123, 50),
+    (161, 123, 50),
+
+    # Green Channel
+    (84, 149, 50),
+    (84, 174, 50),
+    (84, 200, 50),
+
+    # Blue Channel
+    (84, 123, 76),
+    (84, 123, 101),
+    (84, 123, 127),
+
+    # All Channels
+    (110, 149, 76),
+    (135, 174, 101),
+    (161, 200, 127),
+
+    # Red & Blue Channel
+    (110, 123, 76),
+    (135, 123, 101),
+    (161, 123, 127)
 ]
 
 font = pygame.font.Font(None, 74)
@@ -221,21 +242,44 @@ def spawn_objects(num_objects):
 
     for i in range(num_objects):
         while True:
-            random_image = random.choice(image_filenames)
-            img = pygame.image.load(os.path.join(image_path, random_image))
-            img = pygame.transform.scale(img, (200, 200))
+            base_sprite = pygame.image.load('./pictures_football/white1.png')
+            base_sprite = pygame.transform.scale(base_sprite, (200, 200))
+            color = random.choice(colors)
+            colored_sprite = color_sprite(base_sprite, color)
             x = random.randint(50, 1000)
-            y = random.randint(height/2, height -200)
-            print(y)
+            y = random.randint(height / 2, height - 200)
 
             # Check if the new position is too close to existing objects
             if all((x - x0) ** 2 + (y - y0) ** 2 >= 50 ** 2 for x0, y0 in existing_objects):
                 break
 
         existing_objects.append((x, y))
-        win.blit(img, (x, y))
+        win.blit(colored_sprite, (x, y))
 
     pygame.display.update()
+
+
+
+
+def color_sprite(base_sprite, color):
+    """
+    Apply a given color to a sprite.
+
+    :param base_sprite: pygame.Surface object of the sprite.
+    :param color: Tuple of RGB color.
+    :return: pygame.Surface object with the color applied.
+    """
+    colored_sprite = base_sprite.copy()
+    array = pygame.surfarray.pixels3d(colored_sprite)
+    r, g, b = color
+    is_white = (array[:, :, 0] == 255) & (array[:, :, 1] == 255) & (array[:, :, 2] == 255)
+    array[is_white, 0] = r
+    array[is_white, 1] = g
+    array[is_white, 2] = b
+
+    return colored_sprite
+
+
 
 
 
@@ -247,7 +291,6 @@ def attention_experiment(participant_id):
         spawn_delay = random.randint(1, 5)
         time.sleep(spawn_delay)
 
-        color = random.choice(colors)
         spawn_objects(1)
 
         start_time = time.time()
@@ -262,9 +305,8 @@ def attention_experiment(participant_id):
                         reaction_time = time.time() - start_time
                         data['Participant_ID'].append(participant_id)
                         data['Reaction_Time'].append(reaction_time)
-                        data['Color'].append(color)
-                        print(f'Trial {trial + 1} - Reaction time: {reaction_time} seconds- Color: {color}')
-                        print(color)
+                        # data['Color'].append(color)
+                        print(f'Trial {trial + 1} - Reaction time: {reaction_time} seconds- ') # Color: {color}
                         # Background
                         win.blit(background, (0, 0))
                         
