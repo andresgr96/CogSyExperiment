@@ -258,6 +258,7 @@ def spawn_objects(num_objects):
         win.blit(colored_sprite, (x, y))
 
     pygame.display.update()
+    return color  # Add this line to return the color
 
 
 
@@ -292,7 +293,7 @@ def attention_experiment(participant_id):
         spawn_delay = random.randint(1, 5)
         time.sleep(spawn_delay)
 
-        spawn_objects(1)
+        color = spawn_objects(1)
 
         start_time = time.time()
         
@@ -306,8 +307,8 @@ def attention_experiment(participant_id):
                         reaction_time = time.time() - start_time
                         data['Participant_ID'].append(participant_id)
                         data['Reaction_Time'].append(reaction_time)
-                        # data['Color'].append(color)
-                        print(f'Trial {trial + 1} - Reaction time: {reaction_time} seconds- ') # Color: {color}
+                        data['Color'].append(color)
+                        print(f'Trial {trial + 1} - Reaction time: {reaction_time} seconds - Color: {color}')
                         # Background
                         win.blit(background, (0, 0))
                         
