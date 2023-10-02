@@ -16,18 +16,18 @@ clock = pygame.time.Clock()
 
 # Set the background 
 # field_color = (0, 255, 0)
-background = pygame.image.load('./pictures_football/net2.jpg')
+background = pygame.image.load('./stadium_pictures/net2.jpg')
 background = pygame.transform.scale(background, (2040, 1280))
 
 # Player
 
-# player = pygame.image.load('./pictures_football/right1.png')
-image_path = './pictures_football/image_filenames'
+# Declare Folder with Images of Players
+image_path = './pictures_football/'
 image_filenames = os.listdir(image_path)
 
 # Set background sound
 
-mixer.music.load('./stadium_sounds/stadium1.mp3')
+mixer.music.load('./stadium_sounds/stadium3.mp3')
 mixer.music.set_volume(0.15)
 # Define colors
 colors = [
