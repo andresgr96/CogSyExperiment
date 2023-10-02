@@ -233,7 +233,6 @@ def instruction_screen():
 
 
 def spawn_objects(num_objects):
-    # Background
     win.blit(background, (0, 0))
     pygame.display.update()
     time.sleep(0.5)  # Brief delay to ensure background color is set before blocks appear
@@ -242,7 +241,9 @@ def spawn_objects(num_objects):
 
     for i in range(num_objects):
         while True:
-            base_sprite = pygame.image.load('./pictures_football/white1.png')
+            random_image_filename = random.choice(image_filenames)
+            base_sprite_path = os.path.join(image_path, random_image_filename)
+            base_sprite = pygame.image.load(base_sprite_path)
             base_sprite = pygame.transform.scale(base_sprite, (200, 200))
             color = random.choice(colors)
             colored_sprite = color_sprite(base_sprite, color)
