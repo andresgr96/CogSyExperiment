@@ -16,7 +16,7 @@ clock = pygame.time.Clock()
 
 # Set the background 
 # field_color = (0, 255, 0)
-background = pygame.image.load('./stadium_pictures/net2.jpg')
+background = pygame.image.load('./stadium_pictures/net1.jpg')
 background = pygame.transform.scale(background, (2040, 1280))
 
 # Player
@@ -210,10 +210,10 @@ def instruction_screen():
 
     return participant_id
 
-def spawn_objects(num_objects, color):
+
+def spawn_objects(num_objects):
     # Background
     win.blit(background, (0, 0))
-    # win.fill(field_color)
     pygame.display.update()
     time.sleep(0.5)  # Brief delay to ensure background color is set before blocks appear
 
@@ -221,18 +221,23 @@ def spawn_objects(num_objects, color):
 
     for i in range(num_objects):
         while True:
+            random_image = random.choice(image_filenames)
+            img = pygame.image.load(os.path.join(image_path, random_image))
+            img = pygame.transform.scale(img, (200, 200))
             x = random.randint(50, 1000)
-            y = random.randint(50, height - 50)
+            y = random.randint(height/2, height -200)
+            print(y)
 
             # Check if the new position is too close to existing objects
             if all((x - x0) ** 2 + (y - y0) ** 2 >= 50 ** 2 for x0, y0 in existing_objects):
                 break
 
         existing_objects.append((x, y))
-        pygame.draw.rect(win, color, (x, y, 100, 100))
-        # win.blit(player, color, (x, y, 100, 100))
+        win.blit(img, (x, y))
 
     pygame.display.update()
+
+
 
 def attention_experiment(participant_id):
     data = {'Participant_ID': [], 'Reaction_Time': [], 'Color': []}
@@ -243,7 +248,7 @@ def attention_experiment(participant_id):
         time.sleep(spawn_delay)
 
         color = random.choice(colors)
-        spawn_objects(2, color)
+        spawn_objects(1)
 
         start_time = time.time()
         
