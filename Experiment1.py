@@ -58,6 +58,10 @@ colors = [
     (161, 123, 127)
 ]
 
+colors_extended = colors * 4
+random.shuffle(colors_extended)
+
+
 font = pygame.font.Font(None, 74)
 arial_font = pygame.font.SysFont('Arial', 50)
 
@@ -146,7 +150,7 @@ def instruction_screen():
     font = pygame.font.SysFont('Arial', 24)
 
     # Define texts
-    instruction_text = "You will see colored blocks appear on a field background. Your task is to press the SPACE bar as soon as you see a block."
+    instruction_text = "You will see a colored stickman appear on a football field background. Your task is to press the SPACE bar as soon as you see a stickman."
     submit_text = "Please enter your participant ID below:"
     thank_you_text = "Thank you! Press space to start the experiment."
 
@@ -245,7 +249,7 @@ def spawn_objects(num_objects):
             base_sprite_path = os.path.join(image_path, random_image_filename)
             base_sprite = pygame.image.load(base_sprite_path)
             base_sprite = pygame.transform.scale(base_sprite, (200, 200))
-            color = random.choice(colors)
+            color = colors_extended.pop()
             colored_sprite = color_sprite(base_sprite, color)
             x = random.randint(50, 1000)
             y = random.randint(height / 2, height - 200)
@@ -264,13 +268,6 @@ def spawn_objects(num_objects):
 
 
 def color_sprite(base_sprite, color):
-    """
-    Apply a given color to a sprite.
-
-    :param base_sprite: pygame.Surface object of the sprite.
-    :param color: Tuple of RGB color.
-    :return: pygame.Surface object with the color applied.
-    """
     colored_sprite = base_sprite.copy()
     array = pygame.surfarray.pixels3d(colored_sprite)
     r, g, b = color
@@ -281,14 +278,10 @@ def color_sprite(base_sprite, color):
 
     return colored_sprite
 
-
-
-
-
 def attention_experiment(participant_id):
     data = {'Participant_ID': [], 'Reaction_Time': [], 'Color': []}
     
-    for trial in range(40):
+    for trial in range(60):
         running = True
         spawn_delay = random.randint(1, 5)
         time.sleep(spawn_delay)
@@ -317,7 +310,7 @@ def attention_experiment(participant_id):
                         running = False
 
     df = pd.DataFrame(data)
-    df.to_csv(f'experiment_data_{participant_id}.csv', index=False)
+    df.to_csv(os.path.join('results', f'experiment_data_{participant_id}.csv'), index=False)
 
 participant_id = instruction_screen()
 # Play music continuously
