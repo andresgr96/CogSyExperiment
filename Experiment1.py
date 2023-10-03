@@ -264,9 +264,6 @@ def spawn_objects(num_objects):
     pygame.display.update()
     return color  # Add this line to return the color
 
-
-
-
 def color_sprite(base_sprite, color):
     colored_sprite = base_sprite.copy()
     array = pygame.surfarray.pixels3d(colored_sprite)
