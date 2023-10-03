@@ -151,7 +151,8 @@ def instruction_screen():
 
     # Define texts
     instruction_text = "Now, You will see one to five (1-5) colored stickman appear on the football field background."
-    instruction_text_2 = "Your task is to recall the number of stickman show by pressing the correct number in your keyboard."
+    instruction_text_2 = "Additionally, You will some RED stickman appear, make sure to ignore these when counting."
+    instruction_text_3 = "Your task is to recall the number of  non-red stickman shown by pressing the correct number in your keyboard."
     submit_text = "Please enter your participant ID below:"
     thank_you_text = "Thank you! Press space to start the experiment."
 
@@ -202,8 +203,13 @@ def instruction_screen():
         # Display instructions
         ins_txt_surface = font.render(instruction_text, True, BLACK)
         win.blit(ins_txt_surface, (input_box.x - 270, height // 4))
+
         ins_txt_2_surface = font.render(instruction_text_2, True, BLACK)
-        win.blit(ins_txt_2_surface, (input_box.x - 300, height // 4 + 50))
+        win.blit(ins_txt_2_surface, (input_box.x - 270, height // 4 + 50))
+
+        ins_txt_3_surface = font.render(instruction_text_3, True, BLACK)
+        win.blit(ins_txt_3_surface, (input_box.x - 350, height // 4 + 100))
+
         sub_txt_surface = font.render(submit_text, True, BLACK)
         win.blit(sub_txt_surface, (input_box.x - 50, input_box.y - 50))
 
@@ -243,8 +249,8 @@ def spawn_objects_memory(num_objects, color):
     win.blit(background, (0, 0))
     pygame.display.update()
     time.sleep(0.5)
+    existing_objects =spawn_distractors()
 
-    existing_objects = []
     for i in range(num_objects):
         while True:
             random_image_filename = random.choice(image_filenames)
@@ -265,6 +271,30 @@ def spawn_objects_memory(num_objects, color):
     time.sleep(0.5)  # Show the stickman for 0.5 seconds
     win.blit(background, (0, 0))  # Clear the screen
     pygame.display.update()
+
+
+def spawn_distractors():
+    num_distractors = random.randint(1, 3)
+    red_color = (255, 0, 0)
+    existing_objects = []
+    for i in range(num_distractors):
+        while True:
+            random_image_filename = random.choice(image_filenames)
+            base_sprite_path = os.path.join(image_path, random_image_filename)
+            base_sprite = pygame.image.load(base_sprite_path)
+            base_sprite = pygame.transform.scale(base_sprite, (200, 200))
+            colored_sprite = color_sprite(base_sprite, red_color)
+            x = random.randint(50, 1000)
+            y = random.randint(height / 2, height - 200)
+
+            if all((x - x0) ** 2 + (y - y0) ** 2 >= 50 ** 2 for x0, y0 in existing_objects):
+                break
+
+        existing_objects.append((x, y))
+        win.blit(colored_sprite, (x, y))
+
+    return existing_objects
+
 
 
 def get_user_input():
@@ -289,6 +319,9 @@ def color_sprite(base_sprite, color):
 
     return colored_sprite
 
+def is_safe_distance(x, y, existing_objects, min_distance=50):
+    """Check if the (x, y) is a safe distance from all existing objects"""
+    return all((x - x0) ** 2 + (y - y0) ** 2 >= min_distance ** 2 for x0, y0 in existing_objects)
 
 def memory_experiment(participant_id):
     data = {'Participant_ID': [], 'Correct': [], 'Number_Shown': [], 'Color': []}
