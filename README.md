@@ -2,9 +2,10 @@
 
 ## TODO:
 
-1. Add football background
-2. Change squared to photos of stickmen
-3. Add stadium sounds 
+1. Add football background - DONE
+2. Change squared to photos of stickmen - DONE
+3. Add stadium sounds - DONE
+4. Add goodbye screen/ transition to second part of the experiment (memory)
 
 
 Optional: 
