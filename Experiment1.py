@@ -314,9 +314,9 @@ def attention_experiment(participant_id):
     df.to_csv(file_path, index=False)
     print(f'Data saved to: {file_path}')
 
-participant_id = instruction_screen()
-# Play music continuously
-time.sleep(5)
-mixer.music.play(-1)
-attention_experiment(participant_id)
+# participant_id = instruction_screen()
+# # Play music continuously
+# time.sleep(5)
+# mixer.music.play(-1)
+# attention_experiment(participant_id)
 

@@ -9,6 +9,7 @@ def pre_load():
     mixer.music.set_volume(0.15)
 
 def go():
+    pre_load()
     participant_id = instruction_screen()
     # Play music continuously
     time.sleep(5)
