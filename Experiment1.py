@@ -29,7 +29,6 @@ image_filenames = os.listdir(image_path)
 mixer.music.load('./stadium_sounds/stadium3.mp3')
 mixer.music.set_volume(0.15)
 
-
 # Define colors
 colors = [
     # Red Channel
