@@ -14,7 +14,7 @@ def go():
     time.sleep(5)
     mixer.music.play(-1)
     attention_experiment(participant_id)
-    time.slee(2)
+    time.sleep(2)
     participant_id_2 = instruction_screen_exp_2()
     time.sleep(5)
     mixer.music.play(-1)
