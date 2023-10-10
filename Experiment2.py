@@ -5,6 +5,7 @@ import time
 import pandas as pd
 from pygame import mixer
 import os
+from Experiment1 import create_results_directory
 
 pygame.init()
 
@@ -28,7 +29,6 @@ image_filenames = os.listdir(image_path)
 # Set background sound
 mixer.music.load('./stadium_sounds/stadium3.mp3')
 mixer.music.set_volume(0.15)
-
 
 # Define colors
 colors = [
@@ -139,7 +139,7 @@ def welcome_screen():
     return participant_id
 
 
-def instruction_screen():
+def instruction_screen_exp_2():
     global win, width, height
 
     # Define colors
@@ -344,12 +344,13 @@ def memory_experiment(participant_id):
 
         # Adding a random delay between 1.5 to 3 seconds before the next iteration
         time.sleep(random.uniform(1.5, 3))
-
+    create_results_directory()
     df = pd.DataFrame(data)
-    df.to_csv(os.path.join('results', f'memory_experiment_data_{participant_id}.csv'), index=False)
+    file_path =os.path.join('results', f'memory_experiment_data_{participant_id}.csv')
+    df.to_csv(file_path, index=False)
+    print(f'Data saved to: {file_path}')
 
-
-participant_id = instruction_screen()
+participant_id = instruction_screen_exp_2()
 time.sleep(5)
 mixer.music.play(-1)
 memory_experiment(participant_id)

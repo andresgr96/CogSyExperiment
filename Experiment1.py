@@ -275,6 +275,10 @@ def color_sprite(base_sprite, color):
 
     return colored_sprite
 
+def create_results_directory():
+    if not os.path.exists('results'):
+        os.makedirs('results')
+
 def attention_experiment(participant_id):
     data = {'Participant_ID': [], 'Reaction_Time': [], 'Color': []}
     
@@ -305,12 +309,15 @@ def attention_experiment(participant_id):
                         # win.fill(field_color)
                         pygame.display.update()
                         running = False
-
+    create_results_directory()
     df = pd.DataFrame(data)
-    df.to_csv(os.path.join('results', f'experiment_data_{participant_id}.csv'), index=False)
+    file_path = os.path.join('results', f'experiment_data_{participant_id}.csv')
+    df.to_csv(file_path, index=False)
+    print(f'Data saved to: {file_path}')
 
 participant_id = instruction_screen()
 # Play music continuously
 time.sleep(5)
 mixer.music.play(-1)
 attention_experiment(participant_id)
+
