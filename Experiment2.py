@@ -148,29 +148,11 @@ def instruction_screen_exp_2():
 
     # Define texts
     instruction_text = "Now, You will see one to five (1-5) colored stickman appear on the football field background."
-    instruction_text_2 = "Additionally, You will some RED stickman appear, make sure to ignore these when counting."
-    instruction_text_3 = "Your task is to recall the number of non-red stickman shown by pressing the correct number in your keyboard."
-    participant_text = "Please enter your participant ID below:"
-    age_text = "Please enter your age:"
-    sports_experience_text = "Have you played in team sports? (yes/no)"
-    thank_you_text = "Thank you! Press space to start the experiment."
-
-    # Define input boxes for participant ID, age, and sports experience
-    id_input_box = pygame.Rect(width // 2 - 70, height // 3 + 150, 140, 32)
-    age_input_box = pygame.Rect(width // 2 - 70, id_input_box.bottom + 50, 140, 32)
-    sports_input_box = pygame.Rect(width // 2 - 70, age_input_box.bottom + 50, 140, 32)
-
-    # Set default input box properties
-    color_inactive = pygame.Color('lightskyblue3')
-    color_active = pygame.Color('dodgerblue2')
-    color = color_inactive
-    active_box = None
-    input_texts = ['', '', '']
-    input_boxes = [id_input_box, age_input_box, sports_input_box]
-    prompts = [participant_text, age_text, sports_experience_text]
+    instruction_text_2 = "Additionally, You will see some RED stickman appear, make sure to ignore these when counting."
+    instruction_text_3 = "Your task is to recall the number of non-red stickman shown by pressing the correct number on your keyboard."
+    start_exp_text = "When you are ready, press space to start the experiment."
 
     running = True
-    current_box = 0
 
     while running:
         win.fill(WHITE)
@@ -178,64 +160,53 @@ def instruction_screen_exp_2():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                for idx, box in enumerate(input_boxes):
-                    if box.collidepoint(event.pos):
-                        active_box = idx
-                        color = color_active
-                    else:
-                        color = color_inactive
             if event.type == pygame.KEYDOWN:
-                if active_box is not None:
-                    if event.key == pygame.K_BACKSPACE:
-                        input_texts[active_box] = input_texts[active_box][:-1]
-                    elif event.key == pygame.K_RETURN:
-                        current_box += 1
-                        if current_box >= len(input_boxes):
-                            running = False
-                            break
-                        active_box = current_box
-                    else:
-                        input_texts[active_box] += event.unicode
+                if event.key == pygame.K_SPACE:
+                    running = False
 
         # Render text
         win.blit(font.render(instruction_text, True, BLACK), (width // 2 - 350, height // 4))
         win.blit(font.render(instruction_text_2, True, BLACK), (width // 2 - 350, height // 4 + 50))
         win.blit(font.render(instruction_text_3, True, BLACK), (width // 2 - 350, height // 4 + 100))
-        for idx, box in enumerate(input_boxes):
-            txt_surface = font.render(input_texts[idx], True, BLACK)
-            prompt_surface = font.render(prompts[idx], True, BLACK)
-            win.blit(prompt_surface, (box.x - 50, box.y - 40))
-            win.blit(txt_surface, (box.x + 5, box.y + 5))
-            pygame.draw.rect(win, color if active_box == idx else color_inactive, box, 2)
+        win.blit(font.render(start_exp_text, True, BLACK), (width // 2 - 350, height // 4 + 200))
 
         pygame.display.flip()
-        clock.tick(30)
+        # clock.tick(30)
 
-    participant_id = input_texts[0]
-    participant_age = input_texts[1]
-    sports_experience = input_texts[2]  # This can be 'yes' or 'no'
 
-    # Display thank you text
-    win.fill(WHITE)
-    txt_surface = font.render(thank_you_text, True, BLACK)
-    win.blit(txt_surface, (width // 2 - 70, height // 2 - txt_surface.get_height() // 2))
-    pygame.display.flip()
+def goodbye_screen():
+    global win, width, height
 
-    # Wait for space key press
-    waiting_for_space = True
-    while waiting_for_space:
+    # Define colors
+    BLACK = (0, 0, 0)
+    WHITE = (255, 255, 255)
+
+    # Define font and size
+    font = pygame.font.SysFont('Arial', 24)
+
+    # Define texts
+    goodbye_text = "Thats it! Thanks for Participating in our experiment."
+    goodbye_text_2 = "Press space to close this screen."
+
+
+    running = True
+
+    while running:
+        win.fill(WHITE)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
-                    waiting_for_space = False
+                    pygame.quit()
+                    sys.exit()
 
-    return participant_id, participant_age, sports_experience
+        # Render text
+        win.blit(font.render(goodbye_text, True, BLACK), (width // 2 - 350, height // 4))
+        win.blit(font.render(goodbye_text_2, True, BLACK), (width // 2 - 300, height // 4 + 50))
 
-
+        pygame.display.flip()
 
 def spawn_objects_memory(num_objects, color):
     win.blit(background, (0, 0))
@@ -345,8 +316,8 @@ def memory_experiment(participant_id, age, sports_experience):
     print(f'Data saved to: {file_path}')
 
 
-participant_id, age, sports_experience = instruction_screen_exp_2()
-time.sleep(5)
-mixer.music.play(-1)
-memory_experiment(participant_id, age, sports_experience)
+# participant_id, age, sports_experience = instruction_screen_exp_2()
+# time.sleep(5)
+# mixer.music.play(-1)
+# memory_experiment(participant_id, age, sports_experience)
 

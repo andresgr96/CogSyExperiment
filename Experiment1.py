@@ -111,37 +111,6 @@ def input_box(y_offset):
         pygame.display.flip()
         clock.tick(30)
 
-
-# def welcome_screen():
-#     win.fill((255, 255, 255))  # Set background color to white
-#     arial_font = pygame.font.SysFont('Arial', 30)
-#
-#     # Display welcome message
-#     welcome_message = arial_font.render('Welcome to the Experiment', True, (0, 0, 0))
-#     win.blit(welcome_message, (50, 50))  # Adjusted y-coordinate
-#
-#     # Display instruction to enter participant ID
-#     instruction_message = arial_font.render('Please enter your participant ID:', True, (0, 0, 0))
-#     win.blit(instruction_message, (50, 100))  # Adjusted y-coordinate
-#
-#
-#
-#
-#     pygame.display.update()
-#
-#     # Call the input box function to get the participant ID
-#     participant_id = input_box(200)  # Adjusted y-offset to avoid overlapping with the texts
-#
-#     # Display thank you message with the participant ID
-#     win.fill((255, 255, 255))
-#     thank_you_message = arial_font.render('Thank you, Participant: ' + participant_id, True, (0, 0, 0))
-#     win.blit(thank_you_message, (50, 150))  # Set a fixed margin for the text
-#
-#     pygame.display.update()
-#     time.sleep(2)
-#     return participant_id, participant_age, played_sports
-
-
 def instruction_screen():
     global win, width, height
 
@@ -287,7 +256,7 @@ def create_results_directory():
 def attention_experiment(participant_id, participant_age, sports_experience):
     data = {'Participant_ID': [], 'Age': [], 'Sports_Experience': [], 'Reaction_Time': [], 'Color': []}
 
-    for trial in range(10):
+    for trial in range(60):
         running = True
         spawn_delay = random.randint(1, 5)
         time.sleep(spawn_delay)
@@ -322,7 +291,7 @@ def attention_experiment(participant_id, participant_age, sports_experience):
     print(f'Data saved to: {file_path}')
 
 
-participant_id, participant_age, sports_experience = instruction_screen()
-time.sleep(5)
-mixer.music.play(-1)
-attention_experiment(participant_id, participant_age, sports_experience)
+# participant_id, participant_age, sports_experience = instruction_screen()
+# time.sleep(5)
+# mixer.music.play(-1)
+# attention_experiment(participant_id, participant_age, sports_experience)

@@ -1,5 +1,5 @@
 from Experiment1 import instruction_screen, attention_experiment
-from Experiment2 import instruction_screen_exp_2, memory_experiment
+from Experiment2 import instruction_screen_exp_2, memory_experiment, goodbye_screen
 import time
 import pygame
 from pygame import mixer
@@ -10,15 +10,20 @@ def pre_load():
 
 def go():
     pre_load()
-    participant_id = instruction_screen()
+
+    #Exp1
+    participant_id, participant_age, sports_experience = instruction_screen()
     # Play music continuously
     time.sleep(5)
     mixer.music.play(-1)
-    attention_experiment(participant_id)
+    attention_experiment(participant_id, participant_age, sports_experience)
+
+    #Exp2
     time.sleep(2)
-    participant_id_2 = instruction_screen_exp_2()
+    instruction_screen_exp_2()
     time.sleep(5)
     mixer.music.play(-1)
-    memory_experiment(participant_id_2)
+    memory_experiment(participant_id, participant_age, sports_experience)
+    goodbye_screen()
 
 go()
