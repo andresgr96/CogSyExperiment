@@ -60,15 +60,16 @@ colors = [
 colors_extended = colors * 4
 random.shuffle(colors_extended)
 
-
 font = pygame.font.Font(None, 74)
 arial_font = pygame.font.SysFont('Arial', 50)
+
 
 def display_message(message, y_offset, font):
     text = font.render(message, True, (0, 0, 0))
     text_rect = text.get_rect(center=(width // 2, height // 2 - y_offset))
     win.blit(text, text_rect)
     pygame.display.update()
+
 
 def input_box(y_offset):
     active = False
@@ -83,9 +84,9 @@ def input_box(y_offset):
     while True:
         win.fill((255, 255, 255))  # Set the background color to white
         txt_surface = arial_font.render(text, True, (0, 0, 0))  # Set the text color to black
-        box_width = max(200, txt_surface.get_width()+10)
+        box_width = max(200, txt_surface.get_width() + 10)
         input_box.w = box_width
-        win.blit(txt_surface, (input_box.x+5, input_box.y+5))
+        win.blit(txt_surface, (input_box.x + 5, input_box.y + 5))
         pygame.draw.rect(win, color, input_box, 2)
 
         for event in pygame.event.get():
@@ -111,31 +112,34 @@ def input_box(y_offset):
         clock.tick(30)
 
 
-def welcome_screen():
-    win.fill((255, 255, 255))  # Set background color to white
-    arial_font = pygame.font.SysFont('Arial', 30)
-
-    # Display welcome message
-    welcome_message = arial_font.render('Welcome to the Experiment', True, (0, 0, 0))
-    win.blit(welcome_message, (50, 50))  # Adjusted y-coordinate
-
-    # Display instruction to enter participant ID
-    instruction_message = arial_font.render('Please enter your participant ID:', True, (0, 0, 0))
-    win.blit(instruction_message, (50, 100))  # Adjusted y-coordinate
-
-    pygame.display.update()
-
-    # Call the input box function to get the participant ID
-    participant_id = input_box(200)  # Adjusted y-offset to avoid overlapping with the texts
-
-    # Display thank you message with the participant ID
-    win.fill((255, 255, 255))
-    thank_you_message = arial_font.render('Thank you, Participant: ' + participant_id, True, (0, 0, 0))
-    win.blit(thank_you_message, (50, 150))  # Set a fixed margin for the text
-
-    pygame.display.update()
-    time.sleep(2)
-    return participant_id
+# def welcome_screen():
+#     win.fill((255, 255, 255))  # Set background color to white
+#     arial_font = pygame.font.SysFont('Arial', 30)
+#
+#     # Display welcome message
+#     welcome_message = arial_font.render('Welcome to the Experiment', True, (0, 0, 0))
+#     win.blit(welcome_message, (50, 50))  # Adjusted y-coordinate
+#
+#     # Display instruction to enter participant ID
+#     instruction_message = arial_font.render('Please enter your participant ID:', True, (0, 0, 0))
+#     win.blit(instruction_message, (50, 100))  # Adjusted y-coordinate
+#
+#
+#
+#
+#     pygame.display.update()
+#
+#     # Call the input box function to get the participant ID
+#     participant_id = input_box(200)  # Adjusted y-offset to avoid overlapping with the texts
+#
+#     # Display thank you message with the participant ID
+#     win.fill((255, 255, 255))
+#     thank_you_message = arial_font.render('Thank you, Participant: ' + participant_id, True, (0, 0, 0))
+#     win.blit(thank_you_message, (50, 150))  # Set a fixed margin for the text
+#
+#     pygame.display.update()
+#     time.sleep(2)
+#     return participant_id, participant_age, played_sports
 
 
 def instruction_screen():
@@ -150,23 +154,28 @@ def instruction_screen():
 
     # Define texts
     instruction_text = "You will see a colored stickman appear on a football field background. Your task is to press the SPACE bar as soon as you see a stickman."
-    submit_text = "Please enter your participant ID below:"
+    participant_text = "Please enter your participant ID below:"
+    age_text = "Please enter your age:"
+    sports_experience_text = "Have you played in team sports? (yes/no)"
     thank_you_text = "Thank you! Press space to start the experiment."
 
-    # Define input box
-    input_box = pygame.Rect(width // 2 - 70, height // 2 - 10, 140, 32)
+    # Define input boxes for participant ID, age, and sports experience
+    id_input_box = pygame.Rect(width // 2 - 70, height // 3, 140, 32)
+    age_input_box = pygame.Rect(width // 2 - 70, id_input_box.bottom + 50, 140, 32)
+    sports_input_box = pygame.Rect(width // 2 - 70, age_input_box.bottom + 50, 140, 32)
+
+    # Set default input box properties
     color_inactive = pygame.Color('lightskyblue3')
     color_active = pygame.Color('dodgerblue2')
     color = color_inactive
-    active = False
-    text = ''
-    txt_surface = font.render(text, True, color)
-
-    # Define button
-    button = pygame.Rect(width // 2 - 40, height // 2 + 40, 140, 32)
-    button_text = font.render('Submit', True, WHITE)
+    active_box = None
+    input_texts = ['', '', '']
+    input_boxes = [id_input_box, age_input_box, sports_input_box]
+    prompts = [participant_text, age_text, sports_experience_text]
 
     running = True
+    current_box = 0
+
     while running:
         win.fill(WHITE)
         for event in pygame.event.get():
@@ -174,51 +183,45 @@ def instruction_screen():
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if input_box.collidepoint(event.pos):
-                    active = not active
-                else:
-                    active = False
-                color = color_active if active else color_inactive
-                if button.collidepoint(event.pos):
-                    participant_id = text
-                    running = False
-            if event.type == pygame.KEYDOWN:
-                if active:
-                    if event.key == pygame.K_BACKSPACE:
-                        text = text[:-1]
+                for idx, box in enumerate(input_boxes):
+                    if box.collidepoint(event.pos):
+                        active_box = idx
+                        color = color_active
                     else:
-                        text += event.unicode
-                    txt_surface = font.render(text, True, color)
+                        color = color_inactive
+            if event.type == pygame.KEYDOWN:
+                if active_box is not None:
+                    if event.key == pygame.K_BACKSPACE:
+                        input_texts[active_box] = input_texts[active_box][:-1]
+                    elif event.key == pygame.K_RETURN:
+                        current_box += 1
+                        if current_box >= len(input_boxes):
+                            running = False
+                            break
+                        active_box = current_box
+                    else:
+                        input_texts[active_box] += event.unicode
 
         # Render text
-        txt_surface = font.render(text, True, color)
-
-        # Resize input box if text is too long
-        width = max(200, txt_surface.get_width() + 10)
-        input_box.w = width
-
-        # Display instructions
-        ins_txt_surface = font.render(instruction_text, True, BLACK)
-        win.blit(ins_txt_surface, (input_box.x - 450, height // 4))
-        sub_txt_surface = font.render(submit_text, True, BLACK)
-        win.blit(sub_txt_surface, (input_box.x - 50, input_box.y - 50))
-
-        # Draw input box and text
-        pygame.draw.rect(win, color, input_box, 2)
-        win.blit(txt_surface, (input_box.x + 5, input_box.y + 5))
-
-        # Display button
-        pygame.draw.rect(win, BLACK, button)
-        win.blit(button_text, (button.x + button.width // 2 - button_text.get_width() // 2,
-                               button.y + button.height // 2 - button_text.get_height() // 2))
+        win.blit(font.render(instruction_text, True, BLACK), (width // 2 - 350, height // 4))
+        for idx, box in enumerate(input_boxes):
+            txt_surface = font.render(input_texts[idx], True, BLACK)
+            prompt_surface = font.render(prompts[idx], True, BLACK)
+            win.blit(prompt_surface, (box.x - 50, box.y - 40))
+            win.blit(txt_surface, (box.x + 5, box.y + 5))
+            pygame.draw.rect(win, color if active_box == idx else color_inactive, box, 2)
 
         pygame.display.flip()
         clock.tick(30)
 
+    participant_id = input_texts[0]
+    participant_age = input_texts[1]
+    sports_experience = input_texts[2]  # This can be 'yes' or 'no'
+
     # Display thank you text
     win.fill(WHITE)
     txt_surface = font.render(thank_you_text, True, BLACK)
-    win.blit(txt_surface, (input_box.x - 70, height // 2 - txt_surface.get_height() // 2))
+    win.blit(txt_surface, (width // 2 - 70, height // 2 - txt_surface.get_height() // 2))
     pygame.display.flip()
 
     # Wait for space key press
@@ -232,7 +235,7 @@ def instruction_screen():
                 if event.key == pygame.K_SPACE:
                     waiting_for_space = False
 
-    return participant_id
+    return participant_id, participant_age, sports_experience
 
 
 def spawn_objects(num_objects):
@@ -263,6 +266,7 @@ def spawn_objects(num_objects):
     pygame.display.update()
     return color  # Add this line to return the color
 
+
 def color_sprite(base_sprite, color):
     colored_sprite = base_sprite.copy()
     array = pygame.surfarray.pixels3d(colored_sprite)
@@ -274,14 +278,16 @@ def color_sprite(base_sprite, color):
 
     return colored_sprite
 
+
 def create_results_directory():
     if not os.path.exists('results'):
         os.makedirs('results')
 
-def attention_experiment(participant_id):
-    data = {'Participant_ID': [], 'Reaction_Time': [], 'Color': []}
-    
-    for trial in range(60):
+
+def attention_experiment(participant_id, participant_age, sports_experience):
+    data = {'Participant_ID': [], 'Age': [], 'Sports_Experience': [], 'Reaction_Time': [], 'Color': []}
+
+    for trial in range(10):
         running = True
         spawn_delay = random.randint(1, 5)
         time.sleep(spawn_delay)
@@ -289,7 +295,7 @@ def attention_experiment(participant_id):
         color = spawn_objects(1)
 
         start_time = time.time()
-        
+
         while running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -299,13 +305,14 @@ def attention_experiment(participant_id):
                     if event.key == pygame.K_SPACE:
                         reaction_time = time.time() - start_time
                         data['Participant_ID'].append(participant_id)
+                        data['Age'].append(participant_age)
+                        data['Sports_Experience'].append(sports_experience)
                         data['Reaction_Time'].append(reaction_time)
                         data['Color'].append(color)
                         print(f'Trial {trial + 1} - Reaction time: {reaction_time} seconds - Color: {color}')
                         # Background
                         win.blit(background, (0, 0))
-                        
-                        # win.fill(field_color)
+
                         pygame.display.update()
                         running = False
     create_results_directory()
@@ -314,9 +321,8 @@ def attention_experiment(participant_id):
     df.to_csv(file_path, index=False)
     print(f'Data saved to: {file_path}')
 
-# participant_id = instruction_screen()
-# # Play music continuously
-# time.sleep(5)
-# mixer.music.play(-1)
-# attention_experiment(participant_id)
 
+participant_id, participant_age, sports_experience = instruction_screen()
+time.sleep(5)
+mixer.music.play(-1)
+attention_experiment(participant_id, participant_age, sports_experience)
