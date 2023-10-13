@@ -287,9 +287,9 @@ def is_safe_distance(x, y, existing_objects, min_distance=50):
     return all((x - x0) ** 2 + (y - y0) ** 2 >= min_distance ** 2 for x0, y0 in existing_objects)
 
 def memory_experiment(participant_id, age, sports_experience):
-    data = {'Participant_ID': [], 'Age': [], 'Sports_Experience': [], 'Correct': [], 'Number_Shown': [], 'Color': []}
+    data = {'Participant_ID': [], 'Age': [], 'Sports_Experience': [], 'Correct': [],'Number_Shown': [],'User Input':[], 'Color': []}
 
-    for trial in range(60):
+    for trial in range(5):
         num_stickman = random.randint(1, 5)
         color = colors_extended.pop()
 
@@ -303,9 +303,10 @@ def memory_experiment(participant_id, age, sports_experience):
         data['Sports_Experience'].append(sports_experience)
         data['Correct'].append(is_correct)
         data['Number_Shown'].append(num_stickman)
+        data['User Input'].append(user_input)
         data['Color'].append(color)
 
-        print(f'Trial {trial + 1} - Correct: {is_correct} - Number Shown: {num_stickman} - Color: {color}')
+        print(f'Trial {trial + 1} - Correct: {is_correct} - User Input: {user_input} - Number Shown: {num_stickman} - Color: {color}')
 
         # Adding a random delay between 1.5 to 3 seconds before the next iteration
         time.sleep(random.uniform(1.5, 3))
@@ -316,7 +317,7 @@ def memory_experiment(participant_id, age, sports_experience):
     print(f'Data saved to: {file_path}')
 
 
-# participant_id, age, sports_experience = instruction_screen_exp_2()
+# # participant_id, age, sports_experience = instruction_screen_exp_2()
 # time.sleep(5)
 # mixer.music.play(-1)
 # memory_experiment(participant_id, age, sports_experience)
