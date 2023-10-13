@@ -30,7 +30,7 @@ To run the experiment, follow these steps:
 After completing the experiment, you should be able to find two CSV files in the "results" directory. These files contain the data collected during the experiment.
 
 ## Submission
-Once you have finished both parts of the experiment, please submit the two CSV files as your final output.
+Once you have finished both parts of the experiment, either send us the whole results folder or just the 2 CSV files corresponding to your participant ID.
 
 Please feel free to reach out if you have any questions or encounter any issues during the experiment. Good luck!
 
@@ -41,7 +41,6 @@ Please feel free to reach out if you have any questions or encounter any issues 
 3. Add stadium sounds - DONE
 4. Add memory part too - DONE
 5. Add a goodbye screen/ transition to the second part of the experiment (memory)
-
 
 Optional: 
 

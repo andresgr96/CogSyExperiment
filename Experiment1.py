@@ -256,7 +256,7 @@ def create_results_directory():
 def attention_experiment(participant_id, participant_age, sports_experience):
     data = {'Participant_ID': [], 'Age': [], 'Sports_Experience': [], 'Reaction_Time': [], 'Color': []}
 
-    for trial in range(60):
+    for trial in range(1):
         running = True
         spawn_delay = random.randint(1, 5)
         time.sleep(spawn_delay)

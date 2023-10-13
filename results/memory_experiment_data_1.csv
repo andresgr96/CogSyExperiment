@@ -1,6 +1,6 @@
-Participant_ID,Correct,Number_Shown,Color
-1,True,1,"(84, 200, 50)"
-1,True,4,"(84, 149, 50)"
-1,True,1,"(84, 123, 76)"
-1,True,3,"(84, 174, 50)"
-1,False,2,"(110, 123, 50)"
+Participant_ID,Age,Sports_Experience,Correct,Number_Shown,User Input,Color
+1, 2,3,False,2,3,"(84, 123, 76)"
+1, 2,3,False,2,5,"(84, 200, 50)"
+1, 2,3,False,3,4,"(84, 149, 50)"
+1, 2,3,False,4,1,"(110, 123, 50)"
+1, 2,3,False,2,4,"(84, 123, 101)"
