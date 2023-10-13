@@ -172,7 +172,7 @@ def instruction_screen():
                         input_texts[active_box] += event.unicode
 
         # Render text
-        win.blit(font.render(instruction_text, True, BLACK), (width // 2 - 350, height // 4))
+        win.blit(font.render(instruction_text, True, BLACK), (width // 2 - 550, height // 4))
         for idx, box in enumerate(input_boxes):
             txt_surface = font.render(input_texts[idx], True, BLACK)
             prompt_surface = font.render(prompts[idx], True, BLACK)
