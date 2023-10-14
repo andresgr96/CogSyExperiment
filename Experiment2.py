@@ -258,8 +258,6 @@ def spawn_distractors():
 
     return existing_objects
 
-
-
 def get_user_input():
     while True:
         for event in pygame.event.get():
