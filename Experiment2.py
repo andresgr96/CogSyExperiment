@@ -147,7 +147,7 @@ def instruction_screen_exp_2():
     font = pygame.font.SysFont('Arial', 24)
 
     # Define texts
-    instruction_text = "Now, You will see one to five (1-5) colored stickman appear on the football field background."
+    instruction_text = Now, You will see one to five (1-5) colored stickman appear on the football field background."
     instruction_text_2 = "Additionally, You will see some RED stickman appear, make sure to ignore these when counting."
     instruction_text_3 = "Your task is to recall the number of non-red stickman shown by pressing the correct number on your keyboard."
     start_exp_text = "When you are ready, press space to start the experiment."
@@ -281,7 +281,7 @@ def color_sprite(base_sprite, color):
     return colored_sprite
 
 def is_safe_distance(x, y, existing_objects, min_distance=50):
-    """Check if the (x, y) is a safe distance from all existing objects"""
+    "Check if the (x, y) is a safe distance from all existing objects"
     return all((x - x0) ** 2 + (y - y0) ** 2 >= min_distance ** 2 for x0, y0 in existing_objects)
 
 def memory_experiment(participant_id, age, sports_experience):

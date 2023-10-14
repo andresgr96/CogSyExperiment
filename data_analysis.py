@@ -1,19 +1,35 @@
+import matplotlib.pyplot as plt
+import ast
+from merge_csv import merge_csv
 import pandas as pd
-import os
 
-merged_data = pd.DataFrame()
+memory_merged_data = pd.DataFrame()
+attention_merged_data = pd.DataFrame()
 
-# Iterate over CSV files in the directory
-for filename in os.listdir("results/attention"):
-    if filename.endswith(".csv"):
-        file_path = os.path.join("results/attention", filename)
+# Will update the CSV everytime we add another experiment data 
+attention, memory = merge_csv(memory_merged_data, attention_merged_data)
 
-        # Read the CSV file
-        data = pd.read_csv(file_path)
+def plot_reaction_time_vs_color(data, output_filename):
+    # Convert the Color column from string to tuple
+    data['Color'] = data['Color'].apply(lambda x: ast.literal_eval(x))
 
-        # Merge the data based on the specified columns
-        columns_to_merge = ["Participant_ID", "Age", "Sports_Experience", "Reaction_Time", "Color"]
-        merged_data = pd.concat([merged_data, data[columns_to_merge]])
+    # Extract Reaction Time and Color columns
+    reaction_time = data['Reaction_Time']
+    colors = data['Color']
 
-# Save the merged data to a new CSV file
-merged_data.to_csv("merged_results.csv", index=False)
+    # Convert RGB tuples to a format compatible with Matplotlib
+    colors = [(r / 255, g / 255, b / 255) for (r, g, b) in colors]
+
+    # Create a scatter plot
+    plt.scatter(reaction_time, range(len(reaction_time)), c=colors, marker='o', s=20)
+
+    # Customize the plot
+    plt.xlabel('Reaction Time')
+    plt.ylabel('Data Point Index')
+    plt.title('Reaction Time vs. Color')
+    plt.colorbar(label='Color')
+
+    # Save the plot to a file
+    plt.savefig(output_filename)
+
+plot_reaction_time_vs_color(attention, "attention_reaction_time_vs_color.png")
