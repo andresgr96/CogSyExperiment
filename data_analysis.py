@@ -28,9 +28,11 @@ def plot_reaction_time_vs_color(data, output_filename):
     plt.ylabel('Data Point Index')
     plt.title('Reaction Time vs. Color')
     plt.colorbar(label='Color')
-
+    plt.xlim((0,5))
     # Save the plot to a file
     plt.savefig(output_filename)
+
+## Doesnt work yet and its useless rn 
 
 # def rgb_string_to_tuple(rgb_string):
 #     # Expected format: "(R, G, B)"
@@ -93,5 +95,5 @@ def plot_memory_data(data, output_filename):
     # Save the plot to a file
     plt.savefig(output_filename)
 
-# plot_reaction_time_vs_color(attention, "attention_reaction_time_vs_color.png")
-plot_memory_data(memory, "memory_correct_vs_number_shown.png")
+plot_reaction_time_vs_color(attention, "attention_reaction_time_vs_color.png")
+# plot_memory_data(memory, "memory_correct_vs_number_shown.png")
