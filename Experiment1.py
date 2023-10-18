@@ -63,13 +63,11 @@ random.shuffle(colors_extended)
 font = pygame.font.Font(None, 74)
 arial_font = pygame.font.SysFont('Arial', 50)
 
-
 def display_message(message, y_offset, font):
     text = font.render(message, True, (0, 0, 0))
     text_rect = text.get_rect(center=(width // 2, height // 2 - y_offset))
     win.blit(text, text_rect)
     pygame.display.update()
-
 
 def input_box(y_offset):
     active = False
