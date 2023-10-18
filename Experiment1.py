@@ -256,7 +256,7 @@ def create_results_directory():
 def attention_experiment(participant_id, participant_age, sports_experience):
     data = {'Participant_ID': [], 'Age': [], 'Sports_Experience': [], 'Reaction_Time': [], 'Color': []}
 
-    for trial in range(1):
+    for trial in range(60):
         running = True
         spawn_delay = random.randint(1, 5)
         time.sleep(spawn_delay)
@@ -286,7 +286,7 @@ def attention_experiment(participant_id, participant_age, sports_experience):
                         running = False
     create_results_directory()
     df = pd.DataFrame(data)
-    file_path = os.path.join('results', f'experiment_data_{participant_id}.csv')
+    file_path = os.path.join('results/attention', f'experiment_data_{participant_id}.csv')
     df.to_csv(file_path, index=False)
     print(f'Data saved to: {file_path}')
 

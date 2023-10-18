@@ -96,4 +96,4 @@ def plot_memory_data(data, output_filename):
     plt.savefig(output_filename)
 
 plot_reaction_time_vs_color(attention, "attention_reaction_time_vs_color.png")
-# plot_memory_data(memory, "memory_correct_vs_number_shown.png")
+plot_memory_data(memory, "memory_correct_vs_number_shown.png")

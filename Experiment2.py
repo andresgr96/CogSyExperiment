@@ -147,7 +147,7 @@ def instruction_screen_exp_2():
     font = pygame.font.SysFont('Arial', 24)
 
     # Define texts
-    instruction_text = Now, You will see one to five (1-5) colored stickman appear on the football field background."
+    instruction_text = "Now, You will see one to five (1-5) colored stickman appear on the football field background."
     instruction_text_2 = "Additionally, You will see some RED stickman appear, make sure to ignore these when counting."
     instruction_text_3 = "Your task is to recall the number of non-red stickman shown by pressing the correct number on your keyboard."
     start_exp_text = "When you are ready, press space to start the experiment."
@@ -287,7 +287,7 @@ def is_safe_distance(x, y, existing_objects, min_distance=50):
 def memory_experiment(participant_id, age, sports_experience):
     data = {'Participant_ID': [], 'Age': [], 'Sports_Experience': [], 'Correct': [],'Number_Shown': [],'User Input':[], 'Color': []}
 
-    for trial in range(5):
+    for trial in range(60):
         num_stickman = random.randint(1, 5)
         color = colors_extended.pop()
 
@@ -310,7 +310,7 @@ def memory_experiment(participant_id, age, sports_experience):
         time.sleep(random.uniform(1.5, 3))
     create_results_directory()
     df = pd.DataFrame(data)
-    file_path =os.path.join('results', f'memory_experiment_data_{participant_id}.csv')
+    file_path =os.path.join('results/memory', f'memory_experiment_data_{participant_id}.csv')
     df.to_csv(file_path, index=False)
     print(f'Data saved to: {file_path}')
 
