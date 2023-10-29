@@ -195,8 +195,38 @@ def memory_acc_color(df, output_filename):
     # ax.set_ylabel('Data Point Index')
     # ax.set_title('Number Shown vs Color')
     # plt.show()
+
+def average_bar_plot(data, output_filename):
+    # Convert the Color column from string to tuple
+    data['Color'] = data['Color'].apply(lambda x: ast.literal_eval(x))
+
+    # Group the data by 'Color' and calculate the average reaction time for each color
+    color_avg_reaction_time = data.groupby('Color')['Reaction_Time'].mean()
+
+    # Extract unique colors and their corresponding average reaction times
+    unique_colors = color_avg_reaction_time.index
+    avg_reaction_times = color_avg_reaction_time.values
+
+    # Convert RGB tuples to a format compatible with Matplotlib
+    colors = [(r / 255, g / 255, b / 255) for (r, g, b) in unique_colors]
+
+    # Create a barplot
+    plt.bar(range(len(unique_colors)), avg_reaction_times, color=colors)
+
+    # Customize the plot
+    plt.xlabel('Color')
+    plt.ylabel('Reaction Time')
+    plt.title('Average Reaction Time per Color')
+
+    # Set the x-axis ticks and labels to match the unique colors
+    # plt.xticks(range(len(unique_colors)), unique_colors, rotation=45, ha='right')
+
+    # Save the plot to a file
+    plt.savefig(output_filename)
+    plt.show()
    
 # plot_reaction_time_vs_color(attention, "attention_reaction_time_vs_color.png")
 # bar_plot(attention, "bar_plot.png")
 # plot_memory_data(memory, "memory_correct_vs_number_shown.png")
-memory_acc_color(memory, "memory_acc_color.png")
+# memory_acc_color(memory, "memory_acc_color.png")
+average_bar_plot(attention, "average_reaction_time_vs_color.png")
